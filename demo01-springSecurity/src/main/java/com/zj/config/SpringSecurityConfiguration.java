@@ -38,6 +38,8 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .withUser("zj")
                 .password(new BCryptPasswordEncoder().encode("123"))
                 .roles("user");
+
+
     }
 
     /**

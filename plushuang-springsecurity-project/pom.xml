@@ -16,15 +16,13 @@
 
     <properties>
         <java.version>1.8</java.version>
-<!--        <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>-->
-<!--        <thymeleaf-layout-dialect.version>2.0.5</thymeleaf-layout-dialect.version>-->
     </properties>
     <dependencies>
 
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-security</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

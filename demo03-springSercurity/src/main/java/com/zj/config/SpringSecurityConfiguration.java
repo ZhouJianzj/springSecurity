@@ -1,13 +1,18 @@
 package com.zj.config;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author zhoujian
@@ -16,6 +21,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     /**
      * 用户的构造
      * @param auth
@@ -23,20 +31,9 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        用户1拥有admin角色
-        auth.inMemoryAuthentication()
-
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .withUser("zhoujian")
-                .password(new BCryptPasswordEncoder().encode("123"))
-                .roles("admin");
-//         用户2 拥有demo角色
-        auth.inMemoryAuthentication()
-
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .withUser("user")
-                .password(new BCryptPasswordEncoder().encode("123"))
-                .roles("user");
+        // 设置自定义的userDetailsService
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
 
     }
 
@@ -67,4 +64,11 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .logout().permitAll();
         http.csrf().disable();
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+//        return NoOpPasswordEncoder.getInstance();// 使用不使用加密算法保持密码
+        return new BCryptPasswordEncoder();
+    }
+
 }
